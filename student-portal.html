@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - Skilluxe</title>
+    <link rel="stylesheet" href="home.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .portal-heading {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .box-container {
+            display: flex;
+            justify-content: space-between;
+            width: 60%;
+            margin-top: 20px;
+        }
+
+        .box {
+            background-color: #ffffff;
+            padding: 30px;
+            width: 45%;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .box h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .box input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .box button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: rgb(4, 4, 4);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .box button:hover {
+            background-color: #0056b3;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .link a {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="portal-heading">Student Portal</h1>
+        <div class="box-container">
+            <!-- Signup Section -->
+            <div class="box">
+                <h2>Sign Up</h2>
+                <form action="signup-process.php" method="POST">
+                    <input type="text" name="fullName" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="text" name="skills" placeholder="Key Skills" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <div class="link">
+                    Already have an account? <a href="login.html">Login here</a>
+                </div>
+            </div>
+
+            <!-- Login Section -->
+            <div class="box">
+                <h2>Login</h2>
+                <form action="login-process.php" method="POST">
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <div class="link">
+                    Don’t have an account? <a href="signup.html">Sign up here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
