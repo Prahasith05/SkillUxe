@@ -1,2 +1,2 @@
-# SKillUXE
-The issue of unemployment remains a significant challenge, particularly for individuals with skills but limited access to professional networks and opportunities
+# SkillUXE
+This repository contains the code for a simple website built with HTML and CSS. It serves as a beginner-friendly project, providing a foundation for web development enthusiasts to explore basic HTML and CSS concepts.

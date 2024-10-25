@@ -1,0 +1,201 @@
+/* Basic styling and reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Global Colors and Variables */
+:root {
+    --primary-color: #e91e63;
+    --secondary-color: #0f3959;
+    --text-color: #333;
+    --light-text-color: #666;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    box-shadow: var(--card-shadow);
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    width: 30px;
+    margin-right: 10px;
+}
+
+header .logo h1 a {
+    color: white; /* Changed to white */
+    text-decoration: none; /* Optional: No underline */
+    font-size: 1.5em;
+}
+
+header nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+
+header nav a:hover {
+    color: var(--primary-color);
+}
+
+/* Main content styling */
+main {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+main h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+/* Search bar styling */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+}
+
+.search-container input {
+    width: 300px;
+    max-width: 90%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    background-color: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-container button:hover {
+    background-color: #d81b60;
+}
+
+/* Career options styling */
+.career-options {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+/* Career card styling */
+.career-card {
+    width: 300px;
+    background-color: #e4911d;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.career-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.career-card h3 {
+    margin: 15px 0 10px;
+    font-size: 1.2em;
+    color: var(--text-color);
+}
+
+.career-card p {
+    color: var(--light-text-color);
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+/* Hover and Focus States for Career Cards */
+.career-card:hover,
+.career-card:focus {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.career-card:focus {
+    outline: 2px solid var(--primary-color);
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    box-shadow: var(--card-shadow);
+}
+
+footer .social-links img {
+    width: 20px;
+    margin: 0 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .career-options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .career-card {
+        width: 90%;
+    }
+
+    main h1 {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    header nav {
+        margin-top: 10px;
+    }
+
+    .search-container input {
+        width: 100%;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    .search-container button {
+        width: 100%;
+        border-radius: 5px;
+    }
+}

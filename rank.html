@@ -1,115 +1,299 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking Board</title>
-    <link rel="stylesheet" href="rank.css">
-</head>
-<body>
-    <div class="container">
-        <aside class="sidebar">
-            <div class="logo">
-                <h2>CareerBoost</h2>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>SkillUXE Rankings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        .glow {
+            box-shadow: 0 0 10px 2px rgba(255, 0, 0, 0.7);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+        }
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sortByTestsButton = document.getElementById('sort-by-tests');
+            const sortByRatingButton = document.getElementById('sort-by-rating');
+            const sortBySkillButton = document.getElementById('sort-by-skill');
+            const rankingsContainer = document.getElementById('rankings-container');
+            const modal = document.getElementById('profile-modal');
+            const modalContent = document.getElementById('modal-content');
+            const closeModalButton = document.getElementById('close-modal');
+
+            const rankings = [
+                { name: 'Alex Johnson', tests: 200, rating: 4.8, img: 'https://storage.googleapis.com/a1aa/image/L2pJl9gfQOXwLybsW7U6DB4aLQqFgfUATc1ItS0szI9zHDpTA.jpg', skills: ['JavaScript', 'React', 'Node.js'], bestSkill: 'JavaScript', social: { linkedin: '#', twitter: '#' }, education: 'B.Sc. in Computer Science', bio: 'Alex is a seasoned developer with over 10 years of experience in web development.', experience: 'Senior Developer at TechCorp', certifications: ['Certified JavaScript Developer'], projects: ['Portfolio Website', 'E-commerce Platform'] },
+                { name: 'Sophia Lee', tests: 180, rating: 4.9, img: 'https://storage.googleapis.com/a1aa/image/OEyS6x42LurULFMPzVENgkIxsLhj6BZEflsP0F2YkfovHDpTA.jpg', skills: ['Python', 'Django', 'Machine Learning'], bestSkill: 'Python', social: { linkedin: '#', twitter: '#' }, education: 'M.Sc. in Data Science', bio: 'Sophia is a data scientist who loves turning data into actionable insights.', experience: 'Data Analyst at DataWorks', certifications: ['Certified Data Scientist'], projects: ['Sales Prediction Model', 'Customer Segmentation'] },
+                { name: 'Michael Brown', tests: 150, rating: 4.7, img: 'https://storage.googleapis.com/a1aa/image/ohRQuOLlsv7xHRaQZemyYDfUX4 wGsp8WevEj2XAsS8jhPGSnA.jpg', skills: ['Java', 'Spring', 'Microservices'], bestSkill: 'Java', social: { linkedin: '#', twitter: '#' }, education: 'B.Sc. in Software Engineering', bio: 'Michael is a backend developer with a passion for building scalable applications.', experience: 'Backend Developer at TechCorp', certifications: ['Certified Java Developer'], projects: ['E-commerce Platform', 'Real-time Chat App'] },
+                { name: 'Emma Davis', tests: 220, rating: 4.6, img: 'https://storage.googleapis.com/a1aa/image/VOt62xbf64xNZiyTzHzKZitWejcoLPGwx441IFx0gfSkPGSnA.jpg', skills: ['HTML', 'CSS', 'JavaScript'], bestSkill: 'HTML', social: { linkedin: '#', twitter: '#' }, education: 'B.A. in Graphic Design', bio: 'Emma is a front-end developer and designer who creates beautiful and user-friendly websites.', experience: 'Front-end Developer at DesignStudio', certifications: ['Certified Front-end Developer'], projects: ['Portfolio Website', 'Responsive UI Kit'] },
+                { name: 'John Doe', tests: 170, rating: 4.5, img: 'https://placehold.co/100x100', skills: ['C++', 'Algorithms', 'Data Structures'], bestSkill: 'C++', social: { linkedin: '#', twitter: '#' }, education: 'B.Sc. in Computer Science', bio: 'John is a competitive programmer with a knack for solving complex problems.', experience: 'Software Engineer at CodeFights', certifications: ['Certified C++ Developer'], projects: ['Competitive Programming Platform', 'Algorithm Visualization Tool'] },
+                { name: 'Jane Smith', tests: 210, rating: 4.4, img: 'https://placehold.co/100x100', skills: ['Ruby', 'Rails', 'PostgreSQL'], bestSkill: 'Ruby', social: { linkedin: '#', twitter: '#' }, education: 'M.Sc. in Software Engineering', bio: 'Jane is a full-stack developer who enjoys working on both the front-end and back-end.', experience: 'Full-stack Developer at RubyOnRails', certifications: ['Certified Ruby Developer'], projects: ['E-commerce Platform', 'Real-time Chat App'] },
+                { name: 'Chris Evans', tests: 190, rating: 4.3, img: 'https://placehold.co/100x100', skills: ['PHP', 'Laravel', 'MySQL'], bestSkill: 'PHP', social: { linkedin: '#', twitter: '#' }, education: 'B.Sc. in Information Technology', bio: 'Chris is a web developer with expertise in PHP and Laravel.', experience: 'Web Developer at LaravelDev', certifications: ['Certified PHP Developer'], projects: ['Content Management System', 'E-learning Platform'] },
+                { name: 'Natalie Portman', tests: 160, rating: 4.2, img: 'https://placehold.co/100x100', skills: ['Swift', 'iOS Development', 'UI/UX'], bestSkill: 'Swift', social: { linkedin: '#', twitter: '#' }, education: 'B.Sc. in Computer Science', bio: 'Natalie is an iOS developer who creates intuitive and engaging mobile applications.', experience: 'iOS Developer at AppleDev', certifications: ['Certified iOS Developer'], projects: ['Mobile Game', 'Social Media App'] },
+                { name: 'Tom Hanks', tests: 140, rating: 4.1, img: 'https://placehold.co/100x100', skills: ['Kotlin', 'Android Development', 'Firebase'], bestSkill: 'Kotlin', social: { linkedin: '#', twitter: '#' }, education: 'B.Sc. in Software Engineering', bio: 'Tom is an Android developer with a focus on building high-performance apps.', experience: 'Android Developer at AndroidDev', certifications: ['Certified Android Developer'], projects: ['Mobile Wallet App', 'E-commerce App'] },
+                { name: 'Scarlett Johansson', tests: 130, rating: 4.0, img: 'https://placehold.co/100x100', skills: ['Go', 'Docker', 'Kubernetes'], bestSkill: 'Go', social: { linkedin: '#', twitter: '#' }, education: 'M.Sc. in Computer Science', bio: 'Scarlett is a DevOps engineer who specializes in containerization and orchestration.', experience: 'DevOps Engineer at DockerDev', certifications: ['Certified DevOps Engineer'], projects: ['Containerized Application', 'Cloud-based CI/CD Pipeline'] },
+                { name: 'Brad Pitt', tests: 240, rating: 4.9, img: 'https://placehold.co/100x100', skills: ['TypeScript', 'Angular', 'RxJS'], bestSkill: 'TypeScript', social: { linkedin: '#', twitter: '#' }, education: 'B.Sc. in Computer Science', bio: 'Brad is a front-end developer with expertise in TypeScript and Angular.', experience: 'Front-end Developer at AngularDev', certifications: ['Certified Front-end Developer'], projects: ['Single-page Application', 'Real-time Dashboard'] },
+                { name: 'Angelina Jolie', tests: 230, rating: 4.8, img: 'https://placehold.co/100x100', skills: ['Rust', 'Systems Programming', 'Concurrency'], bestSkill: 'Rust', social: { linkedin: '#', twitter: '#' }, education: 'M.Sc. in Computer Science', bio: 'Angelina is a systems programmer with a passion for building high-performance systems.', experience: 'Systems Programmer at RustDev', certifications: ['Certified Rust Developer'], projects: ['Operating System', 'High-performance Computing Framework'] },
+                { name: 'Leonardo DiCaprio', tests: 250, rating: 4.9, img: 'https://placehold.co/100x100', skills: ['Haskell', 'Functional Programming', 'Type Theory'], bestSkill: 'Haskell', social: { linkedin: '#', twitter: '#' }, education: 'Ph.D. in Computer Science', bio: 'Leonardo is a researcher with expertise in functional programming and type theory.', experience: 'Researcher at HaskellResearch', certifications: ['Certified Haskell Developer'], projects: ['Type Inference System', 'Functional Programming Framework'] },
+                { name: 'Jennifer Lawrence', tests: 260, rating: 4.9, img: 'https://placehold.co/100x100', skills: ['Julia', 'Data Science', 'Machine Learning'], bestSkill: 'Julia', social: { linkedin: '#', twitter: '#' }, education: 'M.Sc. in Data Science', bio: 'Jennifer is a data scientist with expertise in Julia and machine learning.', experience: 'Data Scientist at JuliaData', certifications: ['Certified Data Scientist'], projects: ['Predictive Modeling Framework', 'Natural Language Processing Library'] },
+                { name: 'Matt Damon', tests: 270, rating: 4.9, img: 'https://placehold.co/100x100', skills: ['C#', '.NET', 'ASP.NET'], bestSkill: 'C#', social: { linkedin: '#', twitter: '#' }, education: 'B.Sc. in Computer Science', bio: 'Matt is a backend developer with expertise in C# and .NET.', experience: 'Backend Developer at CSharpDev', certifications: ['Certified C# Developer'], projects: ['E-commerce Platform', 'Real-time Chat App'] },
+                { name: 'Ben Affleck', tests: 280, rating: 4.9, img: 'https://placehold.co/100x100', skills: ['Perl', 'Scripting', 'Automation'], bestSkill: 'Perl', social: { linkedin: '#', twitter: '#' }, education: 'B.Sc. in Computer Science', bio: 'Ben is a scripting expert with expertise in Perl and automation.', experience: 'Scripting Expert at PerlDev', certifications: ['Certified Perl Developer'], projects: ['Automation Framework', 'Scripting Library'] },
+            ];
+
+            function renderRankings(rankings) {
+    // Clear previous content
+    rankingsContainer.innerHTML = '';
+
+    rankings.forEach(rank => {
+        const rankElement = document.createElement('div');
+        rankElement.className = 'bg-white p-4 rounded-lg shadow flex items-center space-x-4 hover:shadow-lg transition-shadow';
+
+        // Rank Card HTML
+        rankElement.innerHTML = `
+            <img 
+                alt="Portrait of ${rank.name}" 
+                class="w-16 h-16 rounded-full cursor-pointer hover:scale-110 transition-transform" 
+                src="${rank.img}" 
+                data-name="${rank.name}" 
+            />
+            <div>
+                <h3 class="text-lg font-bold">${rank.name}</h3>
+                <p class="text-gray-600">${rank.tests || 0} Tests Taken</p>
+                <p class="text-gray-600">${rank.rating || 'N/A'} Rating</p>
+                <p class="text-gray-600"><strong>Best Skill:</strong> ${rank.bestSkill || 'Not specified'}</p>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="main.html">Home</a></li>
-                    <li><a href="#">View Companies</a></li>
-                    <li><a href="#">Take Tests</a></li>
-                    <li><a href="#">Edit Profile</a></li>
-                    <li><a href="home.html">Logout</a></li>
-                </ul>
-            </nav>
-        </aside>
+        `;
+        rankingsContainer.appendChild(rankElement);
+    });
 
-        <main class="main-content">
-            <header class="main-header">
-                <div class="filter-section">
-                    <h1>Ranking Board</h1><br>
-                    <div class="filters">
-                        <select id="skill-filter">
-                            <option value="All">All Skills</option>
-                            <option value="JavaScript">JavaScript</option>
-                            <option value="Python">Python</option>
-                            <option value="Java">Java</option>
-                        </select>
-                        <select id="level-filter">
-                            <option value="All">All Levels</option>
-                            <option value="Junior">Junior</option>
-                            <option value="Mid">Mid</option>
-                            <option value="Senior">Senior</option>
-                        </select>
-                    </div>
-                    <br>
-                    <button class="sort-btn" id="sort-rating-btn">
-                        Sort by Rating 
-                        <span id="sort-icon">&#9660;</span> <!-- Downward arrow as the default -->
-                    </button>
-                    
-                </div>
-            </header>
+    // Add click events to all profile images
+    document.querySelectorAll('.w-16.h-16.rounded-full.cursor-pointer').forEach(img => {
+        img.addEventListener('click', (e) => {
+            const name = e.target.getAttribute('data-name');
+            const profile = rankings.find(rank => rank.name === name);
+            if (profile) showProfileModal(profile);
+        });
+    });
+}
 
-            <section class="candidate-list" id="candidate-list">
-                <div class="candidate" data-rating="4.8" data-skills="JavaScript, Python" data-level="Mid">
-                    <div class="profile-info">
-                        <img src="john-smith.jpg" alt="John Smith">
-                        <div class="info">
-                            <h2>John Smith</h2>
-                            <p>JavaScript, Python</p>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <span>Rating: 4.8</span>
-                        <button><a href="viewprofile1.html">View Profile</a></button>
-                    </div>
-                </div>
+// Render the profile modal with smooth animation
+function showProfileModal(profile) {
+    modalContent.innerHTML = `
+        <span id="close-modal" class="close-modal cursor-pointer">&times;</span>
+        <div class="text-center">
+            <img alt="Portrait of ${profile.name}" class="w-32 h-32 rounded-full mx-auto mb-4" src="${profile.img}" />
+            <h2 class="text-2xl font-bold mb-2">${profile.name}</h2>
+            <p class="text-gray-600 mb-4">${profile.bio || 'No bio available.'}</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${renderDetail('Tests Taken', profile.tests || 'No tests available')}
+            ${renderDetail('Rating', profile.rating || 'N/A')}
+            ${renderList('Skills', profile.skills)}
+            ${renderDetail('Best Skill', profile.bestSkill || 'Not specified')}
+            ${renderDetail('Education', profile.education || 'No details available')}
+            ${renderDetail('Experience', profile.experience || 'No experience listed')}
+            ${renderList('Certifications', profile.certifications)}
+            ${renderList('Projects', profile.projects)}
+            ${renderSocialMedia(profile.social)}
+        </div>
+    `;
 
-                <div class="candidate" data-rating="4.7" data-skills="Java, Python" data-level="Mid">
-                    <div class="profile-info">
-                        <img src="jane-doe.jpg" alt="Jane Doe">
-                        <div class="info">
-                            <h2>Jane Doe</h2>
-                            <p>Java, Python</p>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <span>Rating: 4.7</span>
-                        <button><a href="viewprofile1.html">View Profile</a></button>
-                    </div>
-                </div>
+    // Display and animate modal
+    modal.style.display = 'block';
+    modal.classList.add('fade-in');
 
-                <div class="candidate" data-rating="4.6" data-skills="JavaScript, Java" data-level="Senior">
-                    <div class="profile-info">
-                        <img src="michael-lee.jpg" alt="Michael Lee">
-                        <div class="info">
-                            <h2>Michael Lee</h2>
-                            <p>JavaScript, Java</p>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <span>Rating: 4.6</span>
-                        <button><a href="viewprofile1.html">View Profile</a></button>
-                    </div>
-                </div>
+    // Close modal functionality
+    document.getElementById('close-modal').addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+}
 
-                <div class="candidate" data-rating="4.5" data-skills="Python" data-level="Junior">
-                    <div class="profile-info">
-                        <img src="sarah-williams.jpg" alt="Sarah Williams">
-                        <div class="info">
-                            <h2>Sarah Williams</h2>
-                            <p>Python</p>
-                        </div>
-                    </div>
-                    <div class="rating">
-                        <span>Rating: 4.5</span>
-                        <button><a href="viewprofile1.html">View Profile</a></button>
-                    </div>
-                </div>
-            </section>
-        </main>
+// Helper function to render a detail block
+function renderDetail(title, content) {
+    return `
+        <div>
+            <h3 class="text-lg font-bold mb-2">${title}</h3>
+            <p>${content}</p>
+        </div>
+    `;
+}
+
+// Helper function to render a list
+function renderList(title, items = []) {
+    if (!items.length) return renderDetail(title, 'No items available');
+    return `
+        <div>
+            <h3 class="text-lg font-bold mb-2">${title}</h3>
+            <ul class="list-disc list-inside">
+                ${items.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+        </div>
+    `;
+}
+
+// Helper function to render social media links
+function renderSocialMedia(social = {}) {
+    return `
+        <div class="col-span-1 md:col-span-2">
+            <h3 class="text-lg font-bold mb-2">Social Media</h3>
+            <div class="flex space-x-4">
+                ${social.linkedin ? `<a href="${social.linkedin}" class="text-blue-500" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>` : ''}
+                ${social.twitter ? `<a href="${social.twitter}" class="text-blue-400" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>` : ''}
+            </div>
+        </div>
+    `;
+}
+
+
+            sortByTestsButton.addEventListener('click', () => {
+                const sortedByTests = [...rankings].sort((a, b) => b.tests - a.tests);
+                renderRankings(sortedByTests);
+                sortByTestsButton.classList.add('glow');
+                sortByRatingButton.classList.remove('glow');
+                sortBySkillButton.classList.remove('glow');
+            });
+
+            sortByRatingButton.addEventListener('click', () => {
+                const sortedByRating = [...rankings].sort((a, b) => b.rating - a.rating);
+                renderRankings(sortedByRating);
+                sortByRatingButton.classList.add('glow');
+                sortByTestsButton.classList.remove('glow');
+                sortBySkillButton.classList.remove('glow');
+            });
+
+            document.querySelectorAll('.dropdown-content a').forEach(skillOption => {
+                skillOption.addEventListener('click', (e) => {
+                    const skill = e.target.getAttribute('data-skill');
+                    const sortedBySkill = rankings.filter(rank => rank.skills.includes(skill)).sort((a, b) => b.rating - a.rating);
+                    renderRankings(sortedBySkill);
+                    sortBySkillButton.classList.add('glow');
+                    sortByTestsButton.classList.remove('glow');
+                    sortByRatingButton.classList.remove('glow');
+                });
+            });
+
+            closeModalButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            // Initial render
+            renderRankings(rankings);
+        });
+    </script>
+</head>
+<body class="bg-gray-100">
+<header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center">
+            <i class="fas fa-trophy text-red-500 text-2xl mr-2"></i>
+            <h1 class="text-2xl font-bold">SkillUXE Rankings</h1>
+        </div>
     </div>
+</header>
+<main class="container mx-auto px-4 py -8">
+    <h2 class="text-2xl font-bold mb-4">Sort Rankings</h2>
+    <div class="flex space-x-4 mb-8">
+        <button id="sort-by-tests" class="bg-gray-200 text-gray-700 px-4 py-2 rounded">Sort by No. of Tests</button>
+        <button id="sort-by-rating" class="bg-gray-200 text-gray-700 px-4 py-2 rounded">Sort by Rating</button>
+        <div class="dropdown">
+            <button id="sort-by-skill" class="bg-gray-200 text-gray-700 px-4 py-2 rounded">Sort by Skill</button>
+            <div class="dropdown-content">
+                <a href="#" data-skill="JavaScript">JavaScript</a>
+                <a href="#" data-skill="Python">Python</a>
+                <a href="#" data-skill="Java">Java</a>
+                <a href="#" data-skill="HTML">HTML</a>
+                <a href="#" data-skill="C++">C++</a>
+                <a href="#" data-skill="Ruby">Ruby</a>
+                <a href="#" data-skill="PHP">PHP</a>
+                <a href="#" data-skill="Swift">Swift</a>
+                <a href="#" data-skill="Kotlin">Kotlin</a>
+                <a href="#" data-skill="Go">Go</a>
+            </div>
+        </div>
+    </div>
+    <div id="rankings-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Rankings will be rendered here by JavaScript -->
+    </div>
+</main>
+<br>
+<br>
+<br><div class="mt-4">
+    <a href="main.html"><button id="back-to-home" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Back to Home
+    </button></a>
+</div>
+<footer class="bg-white py-4 mt-8">
+    <div class="container mx-auto px-4 text-center text-gray-600">
+        <p>© 2023 SkillUXE Rankings. All rights reserved.</p>
+        <div class="space-x-4">
+            <a class="text-gray-600" href="#">Privacy Policy</a>
+            <a class="text-gray-600" href="#">Terms of Service</a>
+            <a class="text-gray-600" href="#">Contact Us</a>
+        </div>
+    </div>
+</footer>
 
-    <script src="rank.js"></script>
+<div id="profile-modal" class="modal">
+    <div id="modal-content" class="modal-content relative">
+        <span id="close-modal" class="close-modal">&times;</span>
+        <!-- Profile details will be rendered here by JavaScript -->
+    </div>
+</div>
 </body>
 </html>
