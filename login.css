@@ -1,130 +1,73 @@
-body {
-    font-family: Arial, sans-serif;
+/* General reset */
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Kumbh Sans', sans-serif;
+  }
+  
+  /* Black background for auth pages */
+  .auth-background {
+    background-color: #000;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #000000;
-}
-
-.container {
-    display: flex;
-    width: 80%;
-    max-width: 1200px;
-    box-shadow: 0 0 20px rgb(255, 255, 255);
-}
-
-.left, .right {
+  }
+  
+  /* Styling for the auth container */
+  .auth-container {
+    background: #131313;
     padding: 40px;
-    flex: 1;
-}
-
-.left {
-    background-color: #00000000;
-}
-
-.right {
-    background-color: #2e7d32;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-input {
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Heading with gradient text */
+  .auth-container h1 {
+    font-size: 2rem;
+    background-color: #ff8177;
+    background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 20px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    padding: 10px;
-    font-size: 16px;
+  }
+  
+  /* Input fields */
+  .input-field {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  /* Button with gradient */
+  .button {
+    padding: 12px 24px;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
+    background-image: linear-gradient(to right, #ff0844, #ffb199);
+    color: #fff;
+    font-size: 1rem;
     cursor: pointer;
-}
-
-button[type="submit"] {
-    background-color: #4caf50;
-    color: #fff;
-}
-
-.social-signup {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.social-signup button {
-    flex: 1;
-    margin: 0 5px;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.facebook {
-    background-color: #3b5998;
-    color: #fff;
-}
-
-.twitter {
-    background-color: #efeaea4e;
-    color: #ffffff3b;
-}
-
-.soccer-ball {
-    width: 100px;
-    height: 100px;
-    background: url('soccer-ball.png') no-repeat center center;
-    background-size: contain;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-}
-
-.left {
-    background-color: #00000000;
-}
-
-.right {
-    background-color: #2e7d32;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-button {
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button[type="submit"] {
-    background-color: #4caf50;
-    color: #fff;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .button:hover {
+    background-image: linear-gradient(to right, #4837ff, #21d4fd);
+  }
+  
+  /* Error message */
+  #error {
+    margin-top: 15px;
+    color: red;
+    font-size: 1rem;
+  }
+  
